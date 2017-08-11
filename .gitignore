@@ -1,0 +1,4 @@
+/target/
+**/*.rs.bk
+.idea/
+gtk-rs-test.iml
