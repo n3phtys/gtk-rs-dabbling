@@ -1,6 +1,9 @@
 extern crate gtk;
 
 use gtk::prelude::*;
+#[macro_use] extern crate closet;
+
+
 
 fn main() {
     if gtk::init().is_err() {
@@ -38,29 +41,33 @@ fn main() {
 
     window.show_all();
 
-    let button2cc = button2.clone();
-        let button1c = button1.clone();
-        button1.connect_clicked(move |_| {
-            button1c.set_visible(false);
-            button2cc.set_visible(true);
+    button1.connect_clicked(clone_army!(
+            [button1, button2, button3]
+            move |_| {
+            button1.set_visible(false);
+            button2.set_visible(true);
+            button3.set_visible(true);
             println!("Button 1 pressed");
-        });
+        }));
 
-    let mut button2c = button2.clone();
-    //button2c.resize(300, 150);
-    let button1cc = button1.clone();
-        button2.connect_clicked(move |_| {
-            button2c.set_visible(false); // == GONE
+    button2.connect_clicked(clone_army!(
+            [button1, button2, button3]
+            move |_| {
+            button1.set_visible(true);
+            button2.set_visible(false); // == GONE
             //should use grid for multiple buttons so they do not collapse
-            button1cc.set_visible(true);
+            button3.set_visible(true);
             println!("Button 2 pressed");
-        });
+        }));
 
-        let button3c = button3.clone();
-        button3.connect_clicked(move |_| {
-            button3c.set_visible(false);
+    button3.connect_clicked(clone_army!(
+            [button1, button2, button3]
+            move |_| {
+            button1.set_visible(true);
+            button2.set_visible(true);
+            button3.set_visible(false);
             println!("Button 3 pressed");
-        });
+        }));
 
     gtk::main();
 }
